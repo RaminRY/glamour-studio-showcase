@@ -1,13 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { LanguageProvider } from '@/contexts/LanguageContext';
+import { businessData, servicesData } from '@/lib/data';
+import { Language } from '@/lib/i18n';
+import { Header } from '@/components/Header';
+import { HeroSection } from '@/components/HeroSection';
+import { ServicesSection } from '@/components/ServicesSection';
+import { ContactSection } from '@/components/ContactSection';
+import { Footer } from '@/components/Footer';
 
 const Index = () => {
+  // Use preferred language from business data, fallback to 'ru'
+  const defaultLanguage = (businessData.preferredLanguage as Language) || 'ru';
+  const activeServices = servicesData.filter(s => s.isActive);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <LanguageProvider defaultLanguage={defaultLanguage}>
+      <div className="min-h-screen bg-background">
+        <Header business={businessData} />
+        <main>
+          <HeroSection business={businessData} />
+          <ServicesSection services={activeServices} />
+          <ContactSection business={businessData} />
+        </main>
+        <Footer business={businessData} />
       </div>
-    </div>
+    </LanguageProvider>
   );
 };
 
